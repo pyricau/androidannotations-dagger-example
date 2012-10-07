@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>info.piwai.androidannotations.dagger.example</groupId>
+	<artifactId>androidannotations-dagger-example</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>apk</packaging>
+	<name>androidannotations-dagger-example</name>
+
+	<properties>
+		<platform.version>4.0.1.2</platform.version>
+		<androidannotations.version>2.7-SNAPSHOT</androidannotations.version>
+		<dagger.version>1.0-SNAPSHOT</dagger.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.googlecode.androidannotations</groupId>
+			<artifactId>androidannotations</artifactId>
+			<scope>provided</scope>
+			<version>${androidannotations.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode.androidannotations</groupId>
+			<artifactId>androidannotations</artifactId>
+			<classifier>api</classifier>
+			<version>${androidannotations.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.android</groupId>
+			<artifactId>android</artifactId>
+			<version>${platform.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.squareup</groupId>
+			<artifactId>dagger</artifactId>
+			<version>${dagger.version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
+				<artifactId>android-maven-plugin</artifactId>
+				<version>3.1.1</version>
+				<configuration>
+					<sdk>
+						<platform>14</platform>
+					</sdk>
+					<dex>
+						<jvmArguments>
+							<jvmArgument>-Xmx512m</jvmArgument>
+						</jvmArguments>
+					</dex>
+				</configuration>
+				<extensions>true</extensions>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.5.1</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+					<showWarnings>true</showWarnings>
+					<annotationProcessors>
+						<annotationProcessor>com.googlecode.androidannotations.AndroidAnnotationProcessor</annotationProcessor>
+						<annotationProcessor>dagger.internal.codegen.InjectProcessor</annotationProcessor>
+						<annotationProcessor>dagger.internal.codegen.ProvidesProcessor</annotationProcessor>
+						<annotationProcessor>dagger.internal.codegen.FullGraphProcessor</annotationProcessor>
+					</annotationProcessors>
+				</configuration>
+			</plugin>
+
+			<!-- Couldn't get com.squareup:dagger-androidmanifest-plugin to work : 
+				M2Eclipse says "Plugin execution not covered by lifecycle configuration". 
+				From the command line, ActivitiesModule.java is generated but doesn't seem 
+				to be picked up by the ProvidesProcessor -->
+		</plugins>
+	</build>
+
+	<repositories>
+		<repository>
+			<id>snapshots-repository</id>
+			<name>Sonatype oss snapshot repo</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</repository>
+	</repositories>
+
+</project>
